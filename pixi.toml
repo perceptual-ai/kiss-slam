@@ -1,0 +1,94 @@
+[package]
+name = "kiss_slam_pybind"
+version = "0.1.0"
+
+[package.build.backend]
+channels = [
+  "https://prefix.dev/conda-forge",
+]
+name = "pixi-build-cmake"
+version = "==0.3.4"
+
+[package.build.target.linux-64.config]
+extra-args = [
+  "-G", "Ninja",
+  "-DCMAKE_VERBOSE_MAKEFILE=ON",
+  "-DCMAKE_LINKER=$BUILD_PREFIX/bin/ld.mold",
+  "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+  "-DBUILD_SHARED_LIBS=ON",
+  "-DBUILD_TESTS=ON",
+  "-DBUILD_PYTHON_BINDINGS=ON",
+  "-DCMAKE_CXX_STANDARD=17",
+  "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+  "-DPython_ROOT_DIR=$PREFIX",
+  "-DUSE_SYSTEM_EIGEN3=OFF",
+  "-DUSE_SYSTEM_G2O=OFF",
+  "-DUSE_SYSTEM_TSL-ROBIN-MAP=OFF",
+  # Suppress the impproperly initialized Grid members in bonxai:     
+  "-DCMAKE_CXX_FLAGS=-Wno-maybe-uninitialized",
+]
+
+[package.build.target.osx-arm64.config]
+extra-args = [
+  "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+  "-DCMAKE_C_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache",
+  "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+  "-DBUILD_SHARED_LIBS=ON",
+  "-DBUILD_TESTS=ON",
+  "-DCMAKE_CXX_STANDARD=17",
+  "-DPython_ROOT_DIR=$PREFIX",
+  "-DUSE_SYSTEM_EIGEN3=OFF",
+  "-DUSE_SYSTEM_G2O=OFF",
+  "-DUSE_SYSTEM_TSL-ROBIN-MAP=OFF",
+]
+
+[package.target.osx-arm64.build-dependencies]
+python = ">=3.10,<3.13"
+eigen = "*"
+nanobind = "*"
+ccache = "*"
+patchelf = "*"
+tsl_robin_map = "*"
+libcholmod = "*"
+gtest = "*"
+rapidcheck = "*"
+
+[package.target.osx-arm64.host-dependencies]
+python = ">=3.10,<3.13"
+eigen = "*"
+nanobind = "*"
+ccache = "*"
+patchelf = "*"
+tsl_robin_map = "*"
+libcholmod = "*"
+gtest = "*"
+rapidcheck = "*"
+
+[package.target.linux-64.build-dependencies]
+python = ">=3.10,<3.13"
+mold = "*"
+ccache = "*"
+patchelf = "*"
+tsl_robin_map = "*"
+libcholmod = "*"
+gtest = "*"
+rapidcheck = "*"
+ninja = "*"
+numpy = ">=1.24,<3"
+pybind11 = "*"
+
+[package.target.linux-64.host-dependencies]
+python = "*"
+mold = "*"
+ccache = "*"
+patchelf = "*"
+tsl_robin_map = "*"
+libcholmod = "*"
+gtest = "*"
+rapidcheck = "*"
+ninja = "*"
+numpy = ">=1.24,<3"
+pybind11 = "*"

@@ -236,3 +236,5 @@ pyrightconfig.json
 
 # Ignore Visual Studio Code files
 .vscode
+
+**/libg2o_*

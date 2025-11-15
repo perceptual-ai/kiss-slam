@@ -1,7 +1,3 @@
-[build-system]
-requires = ["scikit_build_core", "pybind11"]
-build-backend = "scikit_build_core.build"
-
 [project]
 name = "perceptual-kiss-slam"
 version = "0.0.3"
@@ -12,33 +8,10 @@ authors = [
     { name = "Benedikt Mersch", email = "benedikt.mersch@gmail.com" },
     { name = "Saurabh Gupta", email = "saurabh.gupta1002@gmail.com" },
 ]
-requires-python = ">=3.8"
-keywords = [
-    "LiDAR",
-    "SLAM",
-    "Mapping",
-]
-classifiers = [
-    "Intended Audience :: Developers",
-    "Intended Audience :: Education",
-    "Intended Audience :: Other Audience",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: MacOS",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: Unix",
-    "Programming Language :: C++",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-]
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "kiss-icp>=1.2.3",
     "perceptual-map-closures>=2.0.3",
-    "open3d>=0.19.0",
     "numpy",
     "PyYAML",
     "pydantic>=2",
@@ -46,41 +19,14 @@ dependencies = [
     "pydantic-settings",
 ]
 
+[build-system]
+requires = [ "hatchling" ]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["kiss_slam"]
+
 [project.scripts]
 kiss_slam_pipeline="kiss_slam.tools.cli:run"
 kiss_slam_dump_config="kiss_slam.config.config:write_config"
 
-[project.urls]
-Homepage = "https://github.com/perceptual-ai/kiss-slam"
-
-[tool.scikit-build]
-build-dir = "build/{wheel_tag}"
-cmake.verbose = false
-cmake.minimum-version = "3.22"
-editable.mode = "redirect"
-editable.rebuild = true
-editable.verbose = true
-sdist.exclude = ["kiss_slam_pybind/"]
-wheel.install-dir = "kiss_slam/kiss_slam_pybind/"
-
-[tool.black]
-line-length = 100
-
-[tool.isort]
-profile = "black"
-
-[tool.pylint.format]
-max-line-length = "100"
-
-[tool.cibuildwheel]
-archs = ["auto64"]
-skip = ["*-musllinux*",  "pp*", "cp36-*"]
-
-[tool.cibuildwheel.config-settings]
-"cmake.define.USE_SYSTEM_EIGEN3" = "OFF"
-"cmake.define.USE_SYSTEM_G2O" = "OFF"
-"cmake.define.USE_SYSTEM_TSL-ROBIN-MAP" = "OFF"
-
-[tool.cibuildwheel.macos]
-environment = "MACOSX_DEPLOYMENT_TARGET=11.0"
-archs = ["auto64", "arm64"]
